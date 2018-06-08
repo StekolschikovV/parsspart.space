@@ -17,7 +17,6 @@ ini_set('upload_max_filesize','1024M');
 require "vendor/autoload.php";
 use PHPHtmlParser\Dom;
 
-
 class Parser {
 
     public $sportType = null;
@@ -78,12 +77,10 @@ class Parser {
         $this->sportType = $_GET['sportType'] ?? null;
 
         if(!$this->sportType){
-//            var_dump($this->allSports);
             $this->loadAndSaveContent();
         } else {
-//            echo $this->sportType;
-            if(!array_search($this->sportType, $this->allSports)) {
-                echo 'Такой категории нет';
+            if(is_int(array_search($this->sportType, $this->allSports)) == false) {
+                echo json_encode(['error' => 'There is no such category'], JSON_UNESCAPED_UNICODE);
             } else {
                 echo $this->getContent('./' . $this->sportType . '.txt');
             }
@@ -133,34 +130,5 @@ class Parser {
     }
 
 }
-//https://1xbetua.com/line/Football/
-new Parser();
 
-//$url = 'https://1xbetua.com/line/Football/';
-//$html = file_get_contents($url);
-//
-//$dom->load($html);
-//
-//$contents = $dom->find('#games_content .c-events__subitem');
-//
-//$dataArr = array();
-//
-//foreach ($contents as $content)
-//{
-//
-//    $team = $content->find('.c-events__teams .n')[0];
-//    $team = rtrim($team->getAttribute('title'));
-//
-//    $time = $content->find('.c-events__time span')[0];
-//    $time = $time->text;
-//
-//    array_push($dataArr, [
-//            'time' => $time,
-//            'title' => $team
-//        ]);
-//
-//}
-////echo json_encode($dataArr, JSON_UNESCAPED_UNICODE);
-//
-//
-//
+new Parser();
